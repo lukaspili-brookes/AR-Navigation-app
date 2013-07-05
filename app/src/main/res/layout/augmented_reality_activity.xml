@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <com.siu.android.arapp.camera.CameraSurfaceView
+            android:id="@+id/surface_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    <com.siu.android.arapp.activity.AugmentedView
+            android:id="@+id/ar_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    <com.siu.android.arapp.view.LogInfoView
+            android:id="@+id/log_info_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
+
+</RelativeLayout>

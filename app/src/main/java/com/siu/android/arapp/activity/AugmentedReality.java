@@ -20,7 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import com.siu.android.arapp.R;
 import com.siu.android.arapp.camera.CameraSurface;
+import com.siu.android.arapp.camera.CameraSurfaceView;
 import com.siu.android.arapp.data.ARData;
 import com.siu.android.arapp.ui.Marker;
 
@@ -34,15 +36,9 @@ public class AugmentedReality extends SensorsActivity implements OnTouchListener
 
     private static final String TAG = "AugmentedReality";
     private static final DecimalFormat FORMAT = new DecimalFormat("#.##");
-    private static final int ZOOMBAR_BACKGROUND_COLOR = Color.argb(125, 55, 55, 55);
-    private static final String END_TEXT = FORMAT.format(AugmentedReality.MAX_ZOOM) + " km";
-    private static final int END_TEXT_COLOR = Color.WHITE;
 
     protected static WakeLock wakeLock = null;
-    protected static CameraSurface camScreen = null;
-//    protected static VerticalSeekBar myZoomBar = null;
-//    protected static VerticalTextView endLabel = null;
-    protected static LinearLayout zoomLayout = null;
+    protected static CameraSurfaceView camScreen = null;
     protected static AugmentedView augmentedView = null;
 
     public static final float MAX_ZOOM = 100; // in KM
@@ -54,7 +50,6 @@ public class AugmentedReality extends SensorsActivity implements OnTouchListener
     public static boolean portrait = false;
     public static boolean useCollisionDetection = false;
     public static boolean showRadar = true;
-    public static boolean showZoomBar = true;
 
     /**
      * {@inheritDoc}
@@ -62,20 +57,25 @@ public class AugmentedReality extends SensorsActivity implements OnTouchListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.augmented_reality_activity);
 
-        camScreen = new CameraSurface(this);
-        setContentView(camScreen);
-
-        augmentedView = new AugmentedView(this);
+        camScreen = (CameraSurfaceView) findViewById(R.id.surface_view);
+        augmentedView = (AugmentedView) findViewById(R.id.ar_view);
         augmentedView.setOnTouchListener(this);
-        LayoutParams augLayout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        addContentView(augmentedView, augLayout);
 
-        zoomLayout = new LinearLayout(this);
-        zoomLayout.setVisibility((showZoomBar) ? LinearLayout.VISIBLE : LinearLayout.GONE);
-        zoomLayout.setOrientation(LinearLayout.VERTICAL);
-        zoomLayout.setPadding(5, 5, 5, 5);
-        zoomLayout.setBackgroundColor(ZOOMBAR_BACKGROUND_COLOR);
+//        camScreen = new CameraSurface(this);
+//        setContentView(camScreen);
+//
+//        augmentedView = new AugmentedView(this);
+//        augmentedView.setOnTouchListener(this);
+//        LayoutParams augLayout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//        addContentView(augmentedView, augLayout);
+//
+//        zoomLayout = new LinearLayout(this);
+//        zoomLayout.setVisibility((showZoomBar) ? LinearLayout.VISIBLE : LinearLayout.GONE);
+//        zoomLayout.setOrientation(LinearLayout.VERTICAL);
+//        zoomLayout.setPadding(5, 5, 5, 5);
+//        zoomLayout.setBackgroundColor(ZOOMBAR_BACKGROUND_COLOR);
 
 //        endLabel = new VerticalTextView(this);
 //        endLabel.setText(END_TEXT);
@@ -92,8 +92,8 @@ public class AugmentedReality extends SensorsActivity implements OnTouchListener
 //        zoomBarParams.gravity = Gravity.CENTER_HORIZONTAL;
 //        zoomLayout.addView(myZoomBar, zoomBarParams);
 
-        FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, Gravity.RIGHT);
-        addContentView(zoomLayout, frameLayoutParams);
+//        FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, Gravity.RIGHT);
+//        addContentView(zoomLayout, frameLayoutParams);
 
         updateDataOnZoom();
 

@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.AttributeSet;
 import android.view.View;
 
 import com.siu.android.arapp.data.ARData;
@@ -32,6 +33,14 @@ public class AugmentedView extends View {
 
     public AugmentedView(Context context) {
         super(context);
+    }
+
+    public AugmentedView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public AugmentedView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
     }
 
     /**

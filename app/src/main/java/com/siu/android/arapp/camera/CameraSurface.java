@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -24,6 +25,20 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     public CameraSurface(Context context) {
         super(context);
 
+        initView();
+    }
+
+    public CameraSurface(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initView();
+    }
+
+    public CameraSurface(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        initView();
+    }
+
+    private void initView() {
         try {
             holder = getHolder();
             holder.addCallback(this);
