@@ -1,36 +1,37 @@
 package com.siu.android.arapp.activity;
 
 import android.app.Activity;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import android.content.Context;
 import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.siu.android.arapp.AppConstants;
 import com.siu.android.arapp.common.LowPassFilter;
 import com.siu.android.arapp.common.Matrix;
 import com.siu.android.arapp.data.ARData;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Created by lukas on 7/2/13.
  */
-public class SensorsActivity extends Activity implements SensorEventListener, LocationListener {
+public class SensorsActivity extends Activity implements SensorEventListener, GooglePlayServicesClient.ConnectionCallbacks,
+        GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 
-    private static final String TAG = "SensorsActivity";
     private static final AtomicBoolean computing = new AtomicBoolean(false);
-
-    private static final int MIN_TIME = 30*1000;
-    private static final int MIN_DISTANCE = 10;
 
     private static final float temp[] = new float[9];
     private static final float rotation[] = new float[9];
@@ -48,7 +49,12 @@ public class SensorsActivity extends Activity implements SensorEventListener, Lo
     private static List<Sensor> sensors = null;
     private static Sensor sensorGrav = null;
     private static Sensor sensorMag = null;
-    private static LocationManager locationMgr = null;
+
+    private LocationClient mLocationClient;
+    private LocationRequest mLocationRequest;
+    protected Location mCurrentLocation;
+
+    private boolean mPlayServicesInitialized = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,14 @@ public class SensorsActivity extends Activity implements SensorEventListener, Lo
     @Override
     public void onStart() {
         super.onStart();
+
+        if (!mPlayServicesInitialized) {
+            checkAndInitGooglePlayServices();
+        }
+
+        if (mPlayServicesInitialized) {
+            mLocationClient.connect();
+        }
 
         double angleX = Math.toRadians(-90);
         double angleY = Math.toRadians(-90);
@@ -77,43 +91,20 @@ public class SensorsActivity extends Activity implements SensorEventListener, Lo
 
             sensors = sensorMgr.getSensorList(Sensor.TYPE_ACCELEROMETER);
 
-            if (sensors.size() > 0)
-            {
+            if (sensors.size() > 0) {
                 sensorGrav = sensors.get(0);
             }
 
             sensors = sensorMgr.getSensorList(Sensor.TYPE_MAGNETIC_FIELD);
 
-            if (sensors.size() > 0)
-            {
+            if (sensors.size() > 0) {
                 sensorMag = sensors.get(0);
             }
             sensorMgr.registerListener(this, sensorGrav, SensorManager.SENSOR_DELAY_NORMAL);
             sensorMgr.registerListener(this, sensorMag, SensorManager.SENSOR_DELAY_NORMAL);
 
-            locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
-
             try {
 
-                try {
-                    Location gps=locationMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    Location network=locationMgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    if(gps!=null)
-                    {
-                        onLocationChanged(gps);
-                    }
-                    else if (network!=null)
-                    {
-                        onLocationChanged(network);
-                    }
-                    else
-                    {
-                        onLocationChanged(ARData.hardFix);
-                    }
-                } catch (Exception ex2) {
-                    onLocationChanged(ARData.hardFix);
-                }
 
                 gmf = new GeomagneticField((float) ARData.getCurrentLocation().getLatitude(),
                         (float) ARData.getCurrentLocation().getLongitude(),
@@ -125,7 +116,7 @@ public class SensorsActivity extends Activity implements SensorEventListener, Lo
 
                     magneticNorthCompensation.toIdentity();
 
-                    magneticNorthCompensation.set( (float) Math.cos(angleY),
+                    magneticNorthCompensation.set((float) Math.cos(angleY),
                             0f,
                             (float) Math.sin(angleY),
                             0f,
@@ -147,10 +138,6 @@ public class SensorsActivity extends Activity implements SensorEventListener, Lo
                     sensorMgr.unregisterListener(this, sensorMag);
                     sensorMgr = null;
                 }
-                if (locationMgr != null) {
-                    locationMgr.removeUpdates(this);
-                    locationMgr = null;
-                }
             } catch (Exception ex2) {
                 ex2.printStackTrace();
             }
@@ -159,28 +146,37 @@ public class SensorsActivity extends Activity implements SensorEventListener, Lo
 
     @Override
     protected void onStop() {
-        super.onStop();
-
-        try {
-            try {
-                sensorMgr.unregisterListener(this, sensorGrav);
-                sensorMgr.unregisterListener(this, sensorMag);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        if (mPlayServicesInitialized) {
+            if (mLocationClient.isConnected()) {
+                mLocationClient.removeLocationUpdates(this);
             }
-            sensorMgr = null;
-
-            try {
-                locationMgr.removeUpdates(this);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            locationMgr = null;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            mLocationClient.disconnect();
         }
+
+        sensorMgr.unregisterListener(this, sensorGrav);
+        sensorMgr.unregisterListener(this, sensorMag);
+        sensorMgr = null;
+
+        super.onStop();
     }
 
+    private void checkAndInitGooglePlayServices() {
+        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
+            Log.w(getClass().getName(), "Google play services not installed");
+            Toast.makeText(this, "You need to install Google play services", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        mPlayServicesInitialized = true;
+        mLocationClient = new LocationClient(this, this, this);
+
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(AppConstants.LOCATION_UPDATE_INTERVAL_MS);
+        mLocationRequest.setFastestInterval(AppConstants.LOCATION_UPDATE_FASTEST_INTERVAL_MS);
+    }
+
+    @Override
     public void onSensorChanged(SensorEvent evt) {
         if (!computing.compareAndSet(false, true)) return;
 
@@ -217,23 +213,43 @@ public class SensorsActivity extends Activity implements SensorEventListener, Lo
         computing.set(false);
     }
 
-    public void onProviderDisabled(String provider) {
-        //Not Used
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        if (sensor == null) {
+            return;
+        }
+
+        if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD && accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE) {
+            Log.w(getClass().getName(), "Compass data unreliable");
+        }
     }
 
-    public void onProviderEnabled(String provider) {
-        //Not Used
+    /* Location */
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(getClass().getName(), "Location client connected");
+        mLocationClient.requestLocationUpdates(mLocationRequest, this);
     }
 
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        //Not Used
+    @Override
+    public void onDisconnected() {
+
     }
 
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
     public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
         ARData.setCurrentLocation(location);
-        gmf = new GeomagneticField((float) ARData.getCurrentLocation().getLatitude(),
-                (float) ARData.getCurrentLocation().getLongitude(),
-                (float) ARData.getCurrentLocation().getAltitude(),
+
+        gmf = new GeomagneticField((float) location.getLatitude(),
+                (float) location.getLongitude(),
+                (float) location.getAltitude(),
                 System.currentTimeMillis());
 
         double angleY = Math.toRadians(-gmf.getDeclination());
@@ -252,14 +268,6 @@ public class SensorsActivity extends Activity implements SensorEventListener, Lo
                     (float) Math.cos(angleY));
 
             magneticNorthCompensation.prod(xAxisRotation);
-        }
-    }
-
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        if (sensor==null) throw new NullPointerException();
-
-        if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD && accuracy==SensorManager.SENSOR_STATUS_UNRELIABLE) {
-            Log.e(TAG, "Compass data unreliable");
         }
     }
 }
