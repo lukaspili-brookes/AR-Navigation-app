@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <SurfaceView
+            android:id="@+id/surface_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    <LinearLayout
+            android:id="@+id/log_info_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:background="@drawable/rounded_black_shape"
+            android:visibility="gone">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/log_info_title"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/log_info_text_color"/>
+
+        <TextView
+                android:id="@+id/log_info_heading_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/log_info_text_color"/>
+
+        <TextView
+                android:id="@+id/log_info_pitch_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/log_info_text_color"/>
+
+        <TextView
+                android:id="@+id/log_info_roll_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/log_info_text_color"/>
+
+        <TextView
+                android:id="@+id/log_info_xaxis_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/log_info_text_color"/>
+
+        <TextView
+                android:id="@+id/log_info_yaxis_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/log_info_text_color"/>
+
+        <TextView
+                android:id="@+id/log_info_zaxis_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/log_info_text_color"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

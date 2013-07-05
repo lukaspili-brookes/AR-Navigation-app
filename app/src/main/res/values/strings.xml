@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AR App</string>
+    <string name="log_info_title">Logs</string>
+    <string name="log_info_heading">Heading : %f</string>
+    <string name="log_info_pitch">Pitch : %f</string>
+    <string name="log_info_roll">Roll : %f</string>
+    <string name="log_info_xaxis">X Axis : %f</string>
+    <string name="log_info_yaxis">Y Axis : %f</string>
+    <string name="log_info_zaxis">Z Axis : %f</string>
+    <string name="menu_debug">Debug mode</string>
+
+</resources>
