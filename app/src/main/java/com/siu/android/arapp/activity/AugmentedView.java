@@ -25,7 +25,6 @@ public class AugmentedView extends View {
 
     private static final AtomicBoolean drawing = new AtomicBoolean(false);
 
-    private static final Radar radar = new Radar();
     private static final float[] locationArray = new float[3];
     private static final List<Marker> cache = new ArrayList<Marker>();
     private static final TreeSet<Marker> updated = new TreeSet<Marker>();
@@ -73,8 +72,8 @@ public class AugmentedView extends View {
                 marker.draw(canvas);
             }
 
-            // Radar circle and radar markers
-            if (AugmentedReality.showRadar) radar.draw(canvas);
+//            // Radar circle and radar markers
+//            if (AugmentedReality.showRadar) radar.draw(canvas);
             drawing.set(false);
         }
     }

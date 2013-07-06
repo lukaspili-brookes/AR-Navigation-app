@@ -20,7 +20,7 @@ public class TestSource extends DataSource {
     @Override
     public List<Marker> getMarkers() {
         Bitmap icon = BitmapFactory.decodeResource(Application.getContext().getResources(), R.drawable.ic_launcher);
-        Marker marker = new IconMarker("BASTARD", 48.553239, 2.133495, 72.0, Color.DKGRAY, icon);
+        Marker marker = new IconMarker("BASTARD", 48.553239, 2.133495, 135, Color.DKGRAY, icon);
 
         List<Marker> markers = new ArrayList<Marker>();
         markers.add(marker);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="actionbar_background">#70423D3F</color>
-    <color name="log_info_text_color">@android:color/white</color>
+    <color name="log_info_background">#70000000</color>
+    <color name="log_info_text">@android:color/white</color>
 </resources>

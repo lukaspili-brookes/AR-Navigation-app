@@ -9,7 +9,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="5dp"
-            android:background="@drawable/rounded_black_shape"
+            android:background="@drawable/log_info_rounded_shape"
             android:visibility="visible">
 
         <TextView
@@ -18,43 +18,61 @@
                 android:text="@string/log_info_title"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:textColor="@color/log_info_text_color"/>
+                android:textColor="@color/log_info_text"/>
 
         <TextView
                 android:id="@+id/log_info_heading_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/log_info_text_color"/>
+                android:textColor="@color/log_info_text"/>
+
+        <TextView
+                android:id="@+id/log_info_latitude_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/log_info_text"/>
+
+        <TextView
+                android:id="@+id/log_info_longitude_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/log_info_text"/>
+
+        <TextView
+                android:id="@+id/log_info_altitude_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/log_info_text"/>
 
         <TextView
                 android:id="@+id/log_info_pitch_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/log_info_text_color"/>
+                android:textColor="@color/log_info_text"/>
 
         <TextView
                 android:id="@+id/log_info_roll_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/log_info_text_color"/>
+                android:textColor="@color/log_info_text"/>
 
         <TextView
                 android:id="@+id/log_info_xaxis_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/log_info_text_color"/>
+                android:textColor="@color/log_info_text"/>
 
         <TextView
                 android:id="@+id/log_info_yaxis_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/log_info_text_color"/>
+                android:textColor="@color/log_info_text"/>
 
         <TextView
                 android:id="@+id/log_info_zaxis_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/log_info_text_color"/>
+                android:textColor="@color/log_info_text"/>
 
     </LinearLayout>
     <!--</RelativeLayout>-->

@@ -104,8 +104,6 @@ public class SensorsActivity extends Activity implements SensorEventListener, Go
             sensorMgr.registerListener(this, sensorMag, SensorManager.SENSOR_DELAY_NORMAL);
 
             try {
-
-
                 gmf = new GeomagneticField((float) ARData.getCurrentLocation().getLatitude(),
                         (float) ARData.getCurrentLocation().getLongitude(),
                         (float) ARData.getCurrentLocation().getAltitude(),
@@ -244,6 +242,8 @@ public class SensorsActivity extends Activity implements SensorEventListener, Go
 
     @Override
     public void onLocationChanged(Location location) {
+        location.setAltitude(135);
+
         mCurrentLocation = location;
         ARData.setCurrentLocation(location);
 
