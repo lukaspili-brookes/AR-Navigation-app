@@ -5,8 +5,8 @@
        android:innerRadiusRatio="2">
 
     <gradient
-            android:startColor="@color/log_info_background"
-            android:endColor="@color/log_info_background"
+            android:startColor="@color/toolbox_background"
+            android:endColor="@color/toolbox_background"
             android:angle="270"/>
 
     <corners

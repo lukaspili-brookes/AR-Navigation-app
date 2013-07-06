@@ -7,15 +7,17 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 
 import com.siu.android.arapp.R;
 import com.siu.android.arapp.camera.CameraSurfaceView;
+import com.siu.android.arapp.common.Calculator;
 import com.siu.android.arapp.data.ARData;
 import com.siu.android.arapp.ui.Marker;
 import com.siu.android.arapp.view.LogInfoView;
 import com.siu.android.arapp.view.RadarView;
 
-public class AugmentedReality extends SensorsActivity implements OnTouchListener {
+public class AugmentedRealityActivity extends SensorsActivity implements OnTouchListener {
 
     public static boolean portrait = false;
     public static boolean useCollisionDetection = false;
@@ -24,6 +26,7 @@ public class AugmentedReality extends SensorsActivity implements OnTouchListener
     private AugmentedView mAugmentedView;
     private RadarView mRadarView;
     private LogInfoView mLogInfoView;
+    protected ViewGroup mContentView;
 
     private boolean mShowLogInfo = true;
 
@@ -37,8 +40,9 @@ public class AugmentedReality extends SensorsActivity implements OnTouchListener
 
         mCameraSurfaceView = (CameraSurfaceView) findViewById(R.id.surface_view);
         mAugmentedView = (AugmentedView) findViewById(R.id.ar_view);
-        mRadarView = (RadarView) findViewById(R.id.radar_view);
+//        mRadarView = (RadarView) findViewById(R.id.radar_view);
         mLogInfoView = (LogInfoView) findViewById(R.id.log_info_view);
+        mContentView = (ViewGroup) findViewById(R.id.content);
 
         mAugmentedView.setOnTouchListener(this);
 
@@ -51,7 +55,11 @@ public class AugmentedReality extends SensorsActivity implements OnTouchListener
 
         if (evt.sensor.getType() == Sensor.TYPE_ACCELEROMETER || evt.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             mAugmentedView.postInvalidate();
-            mRadarView.invalidate();
+            //mRadarView.invalidate();
+
+            if (mShowLogInfo) {
+                mLogInfoView.updateCompass(Calculator.getAzimuth(), Calculator.getPitch(), Calculator.getRoll());
+            }
         }
     }
 

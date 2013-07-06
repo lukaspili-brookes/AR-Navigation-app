@@ -16,11 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Abstract class which should be used to set global data.
- *
- * @author Justin Wetherell <phishman3579@gmail.com>
- */
 public abstract class ARData {
 
     private static final String TAG = "ARData";
@@ -209,11 +204,12 @@ public abstract class ARData {
         }
     }
 
-    /**
-     * Get the Markers collection.
-     *
-     * @return Collection of Markers.
-     */
+    public static void clearMarkers() {
+        Log.d(ARData.class.getName(), "Clear markers");
+        markerList.clear();
+        cache.clear();
+    }
+
     public static List<Marker> getMarkers() {
         // If markers we added, zero out the altitude to recompute the collision
         // detection

@@ -1,16 +1,7 @@
 package com.siu.android.arapp.common;
 
-import com.siu.android.arapp.activity.AugmentedReality;
+import com.siu.android.arapp.activity.AugmentedRealityActivity;
 
-/**
- * A static class used to calculate azimuth, pitch, and roll given a rotation
- * matrix.
- *
- * This file was adapted from Mixare <http://www.mixare.org/>
- *
- * @author Daniele Gobbetti <info@mixare.org>
- * @author Justin Wetherell <phishman3579@gmail.com>
- */
 public class Calculator {
 
     private static final Vector looking = new Vector();
@@ -78,7 +69,7 @@ public class Calculator {
 
         tempMatrix.set(rotationMatrix);
         tempMatrix.transpose();
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             looking.set(0, 1, 0);
         } else {
             looking.set(1, 0, 0);

@@ -6,9 +6,8 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.siu.android.arapp.activity.AugmentedReality;
+import com.siu.android.arapp.activity.AugmentedRealityActivity;
 import com.siu.android.arapp.camera.CameraModel;
-import com.siu.android.arapp.common.Calculator;
 import com.siu.android.arapp.data.ARData;
 import com.siu.android.arapp.data.ScreenPosition;
 import com.siu.android.arapp.ui.object.PaintableCircle;
@@ -65,11 +64,9 @@ public class RadarView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // Update the pitch and bearing using the phone's rotation matrix
-        Calculator.calcPitchBearing(ARData.getRotationMatrix());
-        ARData.setAzimuth(Calculator.getAzimuth());
 
-        if (AugmentedReality.portrait) {
+
+        if (AugmentedRealityActivity.portrait) {
             canvas.save();
             canvas.translate(5, canvas.getHeight() - 5);
             canvas.rotate(-90);
@@ -82,7 +79,7 @@ public class RadarView extends View {
         drawRadarLines(canvas);
         drawRadarText(canvas);
 
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             canvas.restore();
         }
     }

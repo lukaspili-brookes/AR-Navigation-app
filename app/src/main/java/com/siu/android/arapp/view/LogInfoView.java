@@ -9,10 +9,14 @@ import android.widget.TextView;
 
 import com.siu.android.arapp.R;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by lukas on 7/5/13.
  */
 public class LogInfoView extends RelativeLayout {
+
+    private DecimalFormat mDecimalFormat = new DecimalFormat("0.00");
 
     private TextView mLatitudeTextView;
     private TextView mLongitudeTextView;
@@ -57,6 +61,15 @@ public class LogInfoView extends RelativeLayout {
         mLatitudeTextView.setText(getContext().getString(R.string.log_info_latitude, location.getLatitude()));
         mLongitudeTextView.setText(getContext().getString(R.string.log_info_longitude, location.getLongitude()));
         mAltitudeTextView.setText(getContext().getString(R.string.log_info_altitude, location.getAltitude()));
+
+        invalidate();
+        requestLayout();
+    }
+
+    public void updateCompass(float azimuth, float pitch, float roll) {
+        mHeadingTextView.setText(getContext().getString(R.string.log_info_heading, mDecimalFormat.format(azimuth)));
+        mPitchTextView.setText(getContext().getString(R.string.log_info_pitch, mDecimalFormat.format(pitch)));
+        mRollTextView.setText(getContext().getString(R.string.log_info_roll, mDecimalFormat.format(roll)));
 
         invalidate();
         requestLayout();

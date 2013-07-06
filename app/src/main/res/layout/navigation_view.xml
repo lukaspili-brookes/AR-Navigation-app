@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:background="@drawable/toolbox_rounded_shape"
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/toolbox_text"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="Navigation"/>
+
+            <TextView
+                    android:id="@+id/navigation_view_origin_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/toolbox_text"
+                    android:text="You are in : Point 1"/>
+
+            <TextView
+                    android:id="@+id/navigation_view_destination_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/toolbox_text"
+                    android:text="Going to : Point 2"/>
+        </LinearLayout>
+
+        <Button
+                android:id="@+id/navigation_next_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:background="@android:color/white"
+                android:text="Next point"/>
+
+    </RelativeLayout>
+</merge>

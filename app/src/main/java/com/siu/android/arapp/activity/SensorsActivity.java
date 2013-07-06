@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.siu.android.arapp.AppConstants;
+import com.siu.android.arapp.common.Calculator;
 import com.siu.android.arapp.common.LowPassFilter;
 import com.siu.android.arapp.common.Matrix;
 import com.siu.android.arapp.data.ARData;
@@ -28,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by lukas on 7/2/13.
  */
-public class SensorsActivity extends Activity implements SensorEventListener, GooglePlayServicesClient.ConnectionCallbacks,
+public class SensorsActivity extends FragmentActivity implements SensorEventListener, GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 
     private static final AtomicBoolean computing = new AtomicBoolean(false);
@@ -208,6 +210,11 @@ public class SensorsActivity extends Activity implements SensorEventListener, Go
 
         ARData.setRotationMatrix(magneticCompensatedCoord);
 
+        // moved from radar view on draw
+        // Update the pitch and bearing using the phone's rotation matrix
+        Calculator.calcPitchBearing(ARData.getRotationMatrix());
+        ARData.setAzimuth(Calculator.getAzimuth());
+
         computing.set(false);
     }
 
@@ -242,7 +249,8 @@ public class SensorsActivity extends Activity implements SensorEventListener, Go
 
     @Override
     public void onLocationChanged(Location location) {
-        location.setAltitude(135);
+        // hard fix fuse location does not support altitude yet
+        location.setAltitude(AppConstants.ALTITUDE);
 
         mCurrentLocation = location;
         ARData.setCurrentLocation(location);

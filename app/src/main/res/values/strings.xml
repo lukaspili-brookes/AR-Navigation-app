@@ -7,9 +7,9 @@
     <string name="log_info_latitude">Latitude : %f</string>
     <string name="log_info_longitude">Longitude : %f</string>
     <string name="log_info_altitude">Altitude : %f</string>
-    <string name="log_info_heading">Heading : %f</string>
-    <string name="log_info_pitch">Pitch : %f</string>
-    <string name="log_info_roll">Roll : %f</string>
+    <string name="log_info_heading">Heading : %s</string>
+    <string name="log_info_pitch">Pitch : %s</string>
+    <string name="log_info_roll">Roll : %s</string>
     <string name="log_info_xaxis">X Axis : %f</string>
     <string name="log_info_yaxis">Y Axis : %f</string>
     <string name="log_info_zaxis">Z Axis : %f</string>

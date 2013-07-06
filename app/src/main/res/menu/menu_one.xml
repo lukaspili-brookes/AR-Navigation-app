@@ -3,9 +3,41 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/menu_debug"
-            android:icon="@drawable/ic_help"
-            android:title="@string/menu_debug"/>
+            android:id="@+id/menu_store_initial_location"
+            android:title="Save initial location"/>
+
+    <item
+            android:id="@+id/menu_start_checkpoint"
+            android:title="Start new point from here"/>
+
+    <item
+            android:id="@+id/menu_end_checkpoint"
+            android:title="Save point"/>
+
+    <item
+            android:id="@+id/menu_start_navigation"
+            android:title="Start navigation"/>
+
+    <item
+            android:id="@+id/menu_stop_navigation"
+            android:title="Stop navigation"/>
+
+    <item
+            android:id="@+id/menu_save_points"
+            android:title="Save points"/>
+
+    <item
+            android:id="@+id/menu_restore_points"
+            android:title="Restore points"/>
+
+    <item
+            android:id="@+id/menu_reset"
+            android:title="Reset"/>
+
+    <!--<item-->
+            <!--android:id="@+id/menu_debug"-->
+            <!--android:icon="@drawable/ic_help"-->
+            <!--android:title="@string/menu_debug"/>-->
 
 
 

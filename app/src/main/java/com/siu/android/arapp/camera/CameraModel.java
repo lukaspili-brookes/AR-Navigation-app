@@ -2,15 +2,6 @@ package com.siu.android.arapp.camera;
 
 import com.siu.android.arapp.common.Vector;
 
-/**
- * Represents the camera and it's view. It also allows a user to project a point
- * given this camera's view.
- *
- * This file was adapted from Mixare <http://www.mixare.org/>
- *
- * @author Daniele Gobbetti <info@mixare.org>
- * @author Justin Wetherell <phishman3579@gmail.com>
- */
 public class CameraModel {
 
     private static final float[] tmp1 = new float[3];

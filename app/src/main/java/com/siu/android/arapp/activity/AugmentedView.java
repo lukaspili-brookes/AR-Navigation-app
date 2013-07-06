@@ -13,14 +13,7 @@ import android.view.View;
 
 import com.siu.android.arapp.data.ARData;
 import com.siu.android.arapp.ui.Marker;
-import com.siu.android.arapp.ui.Radar;
 
-/**
- * This class extends the View class and is designed draw the zoom bar, radar
- * circle, and markers on the View.
- *
- * @author Justin Wetherell <phishman3579@gmail.com>
- */
 public class AugmentedView extends View {
 
     private static final AtomicBoolean drawing = new AtomicBoolean(false);
@@ -62,7 +55,7 @@ public class AugmentedView extends View {
             }
             collection = cache;
 
-            if (AugmentedReality.useCollisionDetection) adjustForCollisions(canvas, collection);
+            if (AugmentedRealityActivity.useCollisionDetection) adjustForCollisions(canvas, collection);
 
             // Draw AR markers in reverse order since the last drawn should be
             // the closest

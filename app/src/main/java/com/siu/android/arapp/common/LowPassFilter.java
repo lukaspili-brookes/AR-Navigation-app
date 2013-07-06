@@ -2,16 +2,6 @@ package com.siu.android.arapp.common;
 
 import android.util.FloatMath;
 
-/**
- * This class implements a low-pass filter. A low-pass filter is an electronic
- * filter that passes low-frequency signals but attenuates (reduces the
- * amplitude of) signals with frequencies higher than the cutoff frequency. The
- * actual amount of attenuation for each frequency varies from filter to filter.
- * It is sometimes called a high-cut filter, or treble cut filter when used in
- * audio applications.
- *
- * @author Justin Wetherell (phishman3579@gmail.com)
- */
 public class LowPassFilter {
 
     /*

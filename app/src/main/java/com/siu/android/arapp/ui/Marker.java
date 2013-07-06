@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 
-import com.siu.android.arapp.activity.AugmentedReality;
+import com.siu.android.arapp.activity.AugmentedRealityActivity;
 import com.siu.android.arapp.camera.CameraModel;
 import com.siu.android.arapp.common.Vector;
 import com.siu.android.arapp.data.ARData;
@@ -262,7 +262,7 @@ public class Marker implements Comparable<Marker> {
         float width = getWidth();
         float height = getHeight();
 
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             x -= height / 2;
             y += width / 2;
         } else {
@@ -275,7 +275,7 @@ public class Marker implements Comparable<Marker> {
 
         float lrX = x;
         float lrY = y;
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             lrX += height;
             lrY -= width;
         } else {
@@ -283,7 +283,7 @@ public class Marker implements Comparable<Marker> {
             lrY += height;
         }
 
-        if (AugmentedReality.portrait &&
+        if (AugmentedRealityActivity.portrait &&
                 (lrX >= -1 && ulX <= cam.getWidth() && ulY >= -1 && lrY <= cam.getHeight())
                 ) {
             isInView = true;
@@ -381,7 +381,7 @@ public class Marker implements Comparable<Marker> {
         float width = marker.getWidth();
         float height = marker.getHeight();
 
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             x -= height / 2;
             y += width / 2;
         } else {
@@ -391,7 +391,7 @@ public class Marker implements Comparable<Marker> {
 
         float middleX = 0;
         float middleY = 0;
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             middleX = x + (height / 2);
             middleY = y - (width / 2);
         } else {
@@ -406,7 +406,7 @@ public class Marker implements Comparable<Marker> {
 
         float urX = x;
         float urY = y;
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             urX += height;
         } else {
             urX += width;
@@ -414,7 +414,7 @@ public class Marker implements Comparable<Marker> {
 
         float llX = x;
         float llY = y;
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             llY -= width;
         } else {
             llY += height;
@@ -422,7 +422,7 @@ public class Marker implements Comparable<Marker> {
 
         float lrX = x;
         float lrY = y;
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             lrX += height;
             lrY -= width;
         } else {
@@ -474,7 +474,7 @@ public class Marker implements Comparable<Marker> {
         float width = marker.getWidth();
         float height = marker.getHeight();
 
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             x -= height / 2;
             y += width / 2;
         } else {
@@ -487,7 +487,7 @@ public class Marker implements Comparable<Marker> {
 
         float lrX = x;
         float lrY = y;
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             lrX += height;
             lrY -= width;
         } else {
@@ -500,7 +500,7 @@ public class Marker implements Comparable<Marker> {
          * "ul (x="+(ulX)+" y="+(ulY)+")"); Log.w("isPointOnMarker",
          * "lr (x="+(lrX)+" y="+(lrY)+")");
          */
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             if (xPoint >= ulX && xPoint <= lrX && yPoint <= ulY && yPoint >= lrY) return true;
         } else {
             if (xPoint >= ulX && xPoint <= lrX && yPoint >= ulY && yPoint <= lrY) return true;
@@ -539,7 +539,7 @@ public class Marker implements Comparable<Marker> {
 
         getScreenPosition().get(locationArray);
         float currentAngle = 0;
-        if (AugmentedReality.portrait) currentAngle = -90;
+        if (AugmentedRealityActivity.portrait) currentAngle = -90;
 
         if (positionContainer == null) positionContainer = new PaintablePosition(positionPoint, locationArray[0], locationArray[1], currentAngle, 1);
         else positionContainer.set(positionPoint, locationArray[0], locationArray[1], currentAngle, 1);
@@ -558,7 +558,7 @@ public class Marker implements Comparable<Marker> {
         getScreenPosition().get(locationArray);
         float x = locationArray[0];
         float y = locationArray[1];
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             x -= textBox.getWidth() / 2;
             y -= textBox.getWidth() / 2;
             y += gpsSymbol.getHeight() / 2;
@@ -567,7 +567,7 @@ public class Marker implements Comparable<Marker> {
             y -= gpsSymbol.getHeight();
         }
         float currentAngle = 0;
-        if (AugmentedReality.portrait) currentAngle = -90;
+        if (AugmentedRealityActivity.portrait) currentAngle = -90;
 
         if (touchPosition == null) touchPosition = new PaintablePosition(touchBox, x, y, currentAngle, 1);
         else touchPosition.set(touchBox, x, y, currentAngle, 1);
@@ -582,14 +582,14 @@ public class Marker implements Comparable<Marker> {
         getScreenPosition().get(locationArray);
         float x = locationArray[0];
         float y = locationArray[1];
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             x -= gpsSymbol.getWidth() / 2;
             y -= gpsSymbol.getHeight();
         } else {
             y -= gpsSymbol.getHeight() / 2;
         }
         float currentAngle = 0;
-        if (AugmentedReality.portrait) currentAngle = -90;
+        if (AugmentedRealityActivity.portrait) currentAngle = -90;
 
         if (symbolContainer == null) symbolContainer = new PaintablePosition(gpsSymbol, x, y, currentAngle, 1);
         else symbolContainer.set(gpsSymbol, x, y, currentAngle, 1);
@@ -614,7 +614,7 @@ public class Marker implements Comparable<Marker> {
         getScreenPosition().get(locationArray);
         float x = locationArray[0];
         float y = locationArray[1];
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             x -= textBox.getWidth() / 2;
             x += textBox.getHeight() / 2;
             y -= textBox.getHeight() / 2;
@@ -622,7 +622,7 @@ public class Marker implements Comparable<Marker> {
             x -= textBox.getWidth() / 2;
         }
         float currentAngle = 0;
-        if (AugmentedReality.portrait)
+        if (AugmentedRealityActivity.portrait)
             currentAngle = -90;
 
         if (textContainer == null) textContainer = new PaintablePosition(textBox, x, y, currentAngle, 1);

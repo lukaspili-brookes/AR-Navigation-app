@@ -28,7 +28,7 @@
             android:theme="@style/AppTheme">
 
         <activity
-                android:name=".activity.Demo"
+                android:name=".activity.NavigationActivity"
                 android:screenOrientation="landscape"
                 android:configChanges="orientation|keyboardHidden">
             <intent-filter>

@@ -3,7 +3,7 @@ package com.siu.android.arapp.ui;
 import android.graphics.Canvas;
 import android.graphics.Color;
 
-import com.siu.android.arapp.activity.AugmentedReality;
+import com.siu.android.arapp.activity.AugmentedRealityActivity;
 import com.siu.android.arapp.camera.CameraModel;
 import com.siu.android.arapp.common.Calculator;
 import com.siu.android.arapp.data.ARData;
@@ -64,7 +64,7 @@ public class Radar {
         Calculator.calcPitchBearing(ARData.getRotationMatrix());
         ARData.setAzimuth(Calculator.getAzimuth());
 
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             canvas.save();
             canvas.translate(5, canvas.getHeight() - 5);
             canvas.rotate(-90);
@@ -77,7 +77,7 @@ public class Radar {
         drawRadarLines(canvas);
         drawRadarText(canvas);
 
-        if (AugmentedReality.portrait) {
+        if (AugmentedRealityActivity.portrait) {
             canvas.restore();
         }
     }
