@@ -31,6 +31,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -118,6 +119,8 @@ public class ImageTargets extends Activity
     boolean mIsStonesAndChipsDataSetActive  = false;
 
     private RelativeLayout mUILayout;
+
+    protected ViewGroup mMainContentView;
 
     /** Static initializer block to load native libraries on start-up. */
     static
@@ -352,6 +355,7 @@ public class ImageTargets extends Activity
         ActionBar actionBar = getActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionbar_background)));
 
+        mMainContentView = (ViewGroup) findViewById(R.id.main_content);
         mGlView = (QCARSampleGLView) findViewById(R.id.glview);
         mUILayout = (RelativeLayout) findViewById(R.id.camera_overlay_layout);
 
@@ -374,12 +378,9 @@ public class ImageTargets extends Activity
     use for rendering. */
     private void loadTextures()
     {
-        mTextures.add(Texture.loadTextureFromApk("TextureTeapotBrass.png",
-                                                 getAssets()));
-        mTextures.add(Texture.loadTextureFromApk("TextureTeapotBlue.png",
-                                                 getAssets()));
-        mTextures.add(Texture.loadTextureFromApk("TextureTeapotRed.png",
-                getAssets()));
+        mTextures.add(Texture.loadTextureFromApk("TextureTeapotBrass.png", getAssets()));
+        mTextures.add(Texture.loadTextureFromApk("TextureTeapotBlue.png", getAssets()));
+        mTextures.add(Texture.loadTextureFromApk("TextureTeapotRed.png", getAssets()));
     }
 
 
@@ -698,7 +699,7 @@ public class ImageTargets extends Activity
                 mGlView.setVisibility(View.VISIBLE);
 
                 // Sets the UILayout to be drawn in front of the camera
-                mUILayout.bringToFront();
+                //mUILayout.bringToFront();
 
                 // Start the camera:
                 updateApplicationStatus(APPSTATUS_CAMERA_RUNNING);
@@ -718,7 +719,8 @@ public class ImageTargets extends Activity
                 loadingDialogHandler.sendEmptyMessage(HIDE_LOADING_DIALOG);
 
                 // Sets the layout background to transparent
-                mUILayout.setBackgroundColor(Color.TRANSPARENT);
+//                mUILayout.setBackgroundColor(Color.TRANSPARENT);
+                mUILayout.setVisibility(View.GONE);
 
                 // Set continuous auto-focus if supported by the device,
                 // otherwise default back to regular auto-focus mode.
@@ -800,7 +802,7 @@ public class ImageTargets extends Activity
 
 
     /** Initializes AR application components. */
-    private void initApplicationAR()
+    protected void initApplicationAR()
     {
         // Do application initialization in native code (e.g. registering
         // callbacks, etc.):

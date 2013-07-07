@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/main_content"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-
-    <com.siu.android.arapp.vuforia.QCARSampleGLView
-            android:id="@+id/glview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
 
     <RelativeLayout
             android:id="@+id/camera_overlay_layout"
@@ -25,4 +19,13 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+
+
+    <com.siu.android.arapp.vuforia.QCARSampleGLView
+            android:id="@+id/glview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
+
+
+</RelativeLayout>

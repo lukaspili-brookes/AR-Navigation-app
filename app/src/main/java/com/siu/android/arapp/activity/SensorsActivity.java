@@ -23,6 +23,7 @@ import com.siu.android.arapp.common.Calculator;
 import com.siu.android.arapp.common.LowPassFilter;
 import com.siu.android.arapp.common.Matrix;
 import com.siu.android.arapp.data.ARData;
+import com.siu.android.arapp.vuforia.ImageTargets;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,7 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by lukas on 7/2/13.
  */
-public class SensorsActivity extends FragmentActivity implements SensorEventListener, GooglePlayServicesClient.ConnectionCallbacks,
+public class SensorsActivity extends ImageTargets implements SensorEventListener, GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 
     private static final AtomicBoolean computing = new AtomicBoolean(false);
@@ -57,11 +58,6 @@ public class SensorsActivity extends FragmentActivity implements SensorEventList
     protected Location mCurrentLocation;
 
     private boolean mPlayServicesInitialized = false;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public void onStart() {

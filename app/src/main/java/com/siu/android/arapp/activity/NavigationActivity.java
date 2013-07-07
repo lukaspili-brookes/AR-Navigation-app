@@ -1,11 +1,9 @@
 package com.siu.android.arapp.activity;
 
-import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -37,7 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class NavigationActivity extends AugmentedRealityActivity {
+public class NavigationActivity extends AugmentedRealityActivity2 {
 
     private Location mInitialLocation;
     private Location mLastPointLocation;
@@ -60,8 +58,8 @@ public class NavigationActivity extends AugmentedRealityActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActionBar actionBar = getActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionbar_background)));
+//        ActionBar actionBar = getActionBar();
+//        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionbar_background)));
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -103,7 +101,7 @@ public class NavigationActivity extends AugmentedRealityActivity {
                 return true;
 
             case R.id.menu_end_checkpoint:
-                FragmentUtil.showDialog(getSupportFragmentManager(), new SavePointDialog());
+                FragmentUtil.showDialog(getFragmentManager(), new SavePointDialog());
                 return true;
 
             case R.id.menu_start_navigation:
@@ -128,11 +126,6 @@ public class NavigationActivity extends AugmentedRealityActivity {
         }
 
         return false;
-    }
-
-    @Override
-    protected void markerTouched(Marker marker) {
-        Toast.makeText(this, marker.getName(), Toast.LENGTH_SHORT).show();
     }
 
     public void calculateEndCheckpoint(int meters, boolean destination) {
@@ -240,6 +233,8 @@ public class NavigationActivity extends AugmentedRealityActivity {
 
             Log.d(getClass().getName(), "Point : " + string);
         }
+
+        mLastPointLocation = mPointLocations.getLast();
 
         ARData.addMarkers(mMarkers);
     }

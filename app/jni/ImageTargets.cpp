@@ -328,17 +328,17 @@ Java_com_siu_android_arapp_vuforia_ImageTargetsRenderer_renderFrame(JNIEnv* env,
         
 #endif
 
-    glEnable(GL_DEPTH_TEST);
-
-    // We must detect if background reflection is active and adjust the culling direction. 
-    // If the reflection is active, this means the post matrix has been reflected as well,
-    // therefore standard counter clockwise face culling will result in "inside out" models. 
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    if(QCAR::Renderer::getInstance().getVideoBackgroundConfig().mReflection == QCAR::VIDEO_BACKGROUND_REFLECTION_ON)
-        glFrontFace(GL_CW);  //Front camera
-    else
-        glFrontFace(GL_CCW);   //Back camera
+//    glEnable(GL_DEPTH_TEST);
+//
+//    // We must detect if background reflection is active and adjust the culling direction.
+//    // If the reflection is active, this means the post matrix has been reflected as well,
+//    // therefore standard counter clockwise face culling will result in "inside out" models.
+//    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_BACK);
+//    if(QCAR::Renderer::getInstance().getVideoBackgroundConfig().mReflection == QCAR::VIDEO_BACKGROUND_REFLECTION_ON)
+//        glFrontFace(GL_CW);  //Front camera
+//    else
+//        glFrontFace(GL_CCW);   //Back camera
 
 
     // Did we find any trackables this frame?
@@ -371,95 +371,95 @@ Java_com_siu_android_arapp_vuforia_ImageTargetsRenderer_renderFrame(JNIEnv* env,
 
         env->CallVoidMethod(object, jmethod, s, distance);
 
-        QCAR::Matrix44F modelViewMatrix = QCAR::Tool::convertPose2GLMatrix(result->getPose());
-
-        // Choose the texture based on the target name:
-        int textureIndex;
-        if (strcmp(trackable.getName(), "chips") == 0)
-        {
-            textureIndex = 0;
-        }
-        else if (strcmp(trackable.getName(), "stones") == 0)
-        {
-            textureIndex = 1;
-        }
-        else
-        {
-            textureIndex = 2;
-        }
-
-        const Texture* const thisTexture = textures[textureIndex];
-
-#ifdef USE_OPENGL_ES_1_1
-        // Load projection matrix:
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrixf(projectionMatrix.data);
-
-        // Load model view matrix:
-        glMatrixMode(GL_MODELVIEW);
-        glLoadMatrixf(modelViewMatrix.data);
-        glTranslatef(0.f, 0.f, kObjectScale);
-        glScalef(kObjectScale, kObjectScale, kObjectScale);
-
-        // Draw object:
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glTexCoordPointer(2, GL_FLOAT, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glVertexPointer(3, GL_FLOAT, 0, (const GLvoid*) &teapotVertices[0]);
-        glNormalPointer(GL_FLOAT, 0,  (const GLvoid*) &teapotNormals[0]);
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT,
-                       (const GLvoid*) &teapotIndices[0]);
-#else
-
-        QCAR::Matrix44F modelViewProjection;
-
-        SampleUtils::translatePoseMatrix(0.0f, 0.0f, kObjectScale,
-                                         &modelViewMatrix.data[0]);
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
-                                     &modelViewMatrix.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
-                                    &modelViewMatrix.data[0] ,
-                                    &modelViewProjection.data[0]);
-
-        glUseProgram(shaderProgramID);
-         
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &teapotTexCoords[0]);
-        
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glUniform1i(texSampler2DHandle, 0 /*GL_TEXTURE0*/);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
-                           (GLfloat*)&modelViewProjection.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT,
-                       (const GLvoid*) &teapotIndices[0]);
-
-        glDisableVertexAttribArray(vertexHandle);
-        glDisableVertexAttribArray(normalHandle);
-        glDisableVertexAttribArray(textureCoordHandle);
-
-        SampleUtils::checkGlError("ImageTargets renderFrame");
-#endif
+//        QCAR::Matrix44F modelViewMatrix = QCAR::Tool::convertPose2GLMatrix(result->getPose());
+//
+//        // Choose the texture based on the target name:
+//        int textureIndex;
+//        if (strcmp(trackable.getName(), "chips") == 0)
+//        {
+//            textureIndex = 0;
+//        }
+//        else if (strcmp(trackable.getName(), "stones") == 0)
+//        {
+//            textureIndex = 1;
+//        }
+//        else
+//        {
+//            textureIndex = 2;
+//        }
+//
+//        const Texture* const thisTexture = textures[textureIndex];
+//
+//#ifdef USE_OPENGL_ES_1_1
+//        // Load projection matrix:
+//        glMatrixMode(GL_PROJECTION);
+//        glLoadMatrixf(projectionMatrix.data);
+//
+//        // Load model view matrix:
+//        glMatrixMode(GL_MODELVIEW);
+//        glLoadMatrixf(modelViewMatrix.data);
+//        glTranslatef(0.f, 0.f, kObjectScale);
+//        glScalef(kObjectScale, kObjectScale, kObjectScale);
+//
+//        // Draw object:
+//        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+//        glTexCoordPointer(2, GL_FLOAT, 0, (const GLvoid*) &teapotTexCoords[0]);
+//        glVertexPointer(3, GL_FLOAT, 0, (const GLvoid*) &teapotVertices[0]);
+//        glNormalPointer(GL_FLOAT, 0,  (const GLvoid*) &teapotNormals[0]);
+//        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT,
+//                       (const GLvoid*) &teapotIndices[0]);
+//#else
+//
+//        QCAR::Matrix44F modelViewProjection;
+//
+//        SampleUtils::translatePoseMatrix(0.0f, 0.0f, kObjectScale,
+//                                         &modelViewMatrix.data[0]);
+//        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
+//                                     &modelViewMatrix.data[0]);
+//        SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
+//                                    &modelViewMatrix.data[0] ,
+//                                    &modelViewProjection.data[0]);
+//
+//        glUseProgram(shaderProgramID);
+//
+//        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
+//                              (const GLvoid*) &teapotVertices[0]);
+//        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
+//                              (const GLvoid*) &teapotNormals[0]);
+//        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
+//                              (const GLvoid*) &teapotTexCoords[0]);
+//
+//        glEnableVertexAttribArray(vertexHandle);
+//        glEnableVertexAttribArray(normalHandle);
+//        glEnableVertexAttribArray(textureCoordHandle);
+//
+//        glActiveTexture(GL_TEXTURE0);
+//        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+//        glUniform1i(texSampler2DHandle, 0 /*GL_TEXTURE0*/);
+//        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
+//                           (GLfloat*)&modelViewProjection.data[0] );
+//        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT,
+//                       (const GLvoid*) &teapotIndices[0]);
+//
+//        glDisableVertexAttribArray(vertexHandle);
+//        glDisableVertexAttribArray(normalHandle);
+//        glDisableVertexAttribArray(textureCoordHandle);
+//
+//        SampleUtils::checkGlError("ImageTargets renderFrame");
+//#endif
 
     }
-
-    glDisable(GL_DEPTH_TEST);
-
-#ifdef USE_OPENGL_ES_1_1        
-    glDisable(GL_TEXTURE_2D);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-#endif
-
-    QCAR::Renderer::getInstance().end();
+//
+//    glDisable(GL_DEPTH_TEST);
+//
+//#ifdef USE_OPENGL_ES_1_1
+//    glDisable(GL_TEXTURE_2D);
+//    glDisableClientState(GL_VERTEX_ARRAY);
+//    glDisableClientState(GL_NORMAL_ARRAY);
+//    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//#endif
+//
+//    QCAR::Renderer::getInstance().end();
 }
 
 
