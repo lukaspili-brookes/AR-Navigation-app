@@ -22,24 +22,32 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 
-/** The renderer class for the ImageTargets sample. */
-public class ImageTargetsRenderer implements GLSurfaceView.Renderer
-{
+/**
+ * The renderer class for the ImageTargets sample.
+ */
+public class ImageTargetsRenderer implements GLSurfaceView.Renderer {
     public boolean mIsActive = false;
 
-    /** Reference to main activity **/
+    /**
+     * Reference to main activity *
+     */
     public ImageTargets mActivity;
 
-    /** Native function for initializing the renderer. */
+    /**
+     * Native function for initializing the renderer.
+     */
     public native void initRendering();
 
-    /** Native function to update the renderer. */
+    /**
+     * Native function to update the renderer.
+     */
     public native void updateRendering(int width, int height);
 
 
-    /** Called when the surface is created or recreated. */
-    public void onSurfaceCreated(GL10 gl, EGLConfig config)
-    {
+    /**
+     * Called when the surface is created or recreated.
+     */
+    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         DebugLog.LOGD("GLRenderer::onSurfaceCreated");
 
         // Call native function to initialize rendering:
@@ -51,9 +59,10 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     }
 
 
-    /** Called when the surface changed size. */
-    public void onSurfaceChanged(GL10 gl, int width, int height)
-    {
+    /**
+     * Called when the surface changed size.
+     */
+    public void onSurfaceChanged(GL10 gl, int width, int height) {
         DebugLog.LOGD("GLRenderer::onSurfaceChanged");
 
         // Call native function to update rendering when render surface
@@ -65,13 +74,16 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     }
 
 
-    /** The native render function. */
+    /**
+     * The native render function.
+     */
     public native void renderFrame();
 
 
-    /** Called to draw the current frame. */
-    public void onDrawFrame(GL10 gl)
-    {
+    /**
+     * Called to draw the current frame.
+     */
+    public void onDrawFrame(GL10 gl) {
         if (!mIsActive)
             return;
 
@@ -83,7 +95,8 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     }
 
     public void objectDetected(String name, float distance) {
-        Log.d(getClass().getName(), "DISTANCE " + distance);
-        Log.d(getClass().getName(), "NAME " + name);
+//        Log.d(getClass().getName(), "DISTANCE " + distance);
+//        Log.d(getClass().getName(), "NAME " + name);
+        mActivity.imageRecognized(name, distance);
     }
 }

@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.siu.android.arapp.R;
 import com.siu.android.arapp.common.Calculator;
+import com.siu.android.arapp.data.ARData;
 import com.siu.android.arapp.view.LogInfoView;
 
 /**
@@ -18,7 +19,7 @@ import com.siu.android.arapp.view.LogInfoView;
 public class AugmentedRealityActivity2 extends SensorsActivity {
 
     private AugmentedView mAugmentedView;
-    private LogInfoView mLogInfoView;
+    protected LogInfoView mLogInfoView;
     protected ViewGroup mContentView;
 
     private boolean mShowLogInfo = true;
@@ -37,6 +38,10 @@ public class AugmentedRealityActivity2 extends SensorsActivity {
         mAugmentedView = (AugmentedView) view.findViewById(R.id.ar_view);
         mLogInfoView = (LogInfoView) view.findViewById(R.id.log_info_view);
         mContentView = (ViewGroup) view.findViewById(R.id.content);
+
+        if (mShowLogInfo) {
+            mLogInfoView.updateLocation(ARData.getCurrentLocation());
+        }
     }
 
     @Override

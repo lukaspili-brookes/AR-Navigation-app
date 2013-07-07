@@ -1,6 +1,5 @@
 package com.siu.android.arapp.activity;
 
-import android.app.Activity;
 import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -8,7 +7,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -58,6 +56,7 @@ public class SensorsActivity extends ImageTargets implements SensorEventListener
     protected Location mCurrentLocation;
 
     private boolean mPlayServicesInitialized = false;
+    protected boolean mFirstLocation = false;
 
     @Override
     public void onStart() {
@@ -245,6 +244,8 @@ public class SensorsActivity extends ImageTargets implements SensorEventListener
 
     @Override
     public void onLocationChanged(Location location) {
+        mFirstLocation = true;
+
         // hard fix fuse location does not support altitude yet
         location.setAltitude(AppConstants.ALTITUDE);
 

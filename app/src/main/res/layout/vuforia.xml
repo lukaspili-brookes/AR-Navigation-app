@@ -19,8 +19,6 @@
 
     </RelativeLayout>
 
-
-
     <com.siu.android.arapp.vuforia.QCARSampleGLView
             android:id="@+id/glview"
             android:layout_width="match_parent"

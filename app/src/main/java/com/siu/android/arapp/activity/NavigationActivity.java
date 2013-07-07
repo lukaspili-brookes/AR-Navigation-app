@@ -37,6 +37,10 @@ import java.util.Set;
 
 public class NavigationActivity extends AugmentedRealityActivity2 {
 
+    private static final String START = "start";
+    private static final String[] CHECKPOINTS = {"chips", "checkpoint2"};
+    private static final String DESTINATION = "stones";
+
     private Location mInitialLocation;
     private Location mLastPointLocation;
 
@@ -45,6 +49,7 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
 
     private LinkedList<Location> mPointLocations = new LinkedList<Location>();
     private List<Marker> mMarkers = new LinkedList<Marker>();
+    private List<String> mImageTargets = new LinkedList<String>();
 
     private int mCurrentNavigationPoint;
 
@@ -52,6 +57,9 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
 
     private NavigationView mNavigationView;
     private Button mNavigationNextButton;
+
+    private boolean mLocationFromImageTargets = false;
+    private boolean mNavigationMode = false;
 
     @Override
 
@@ -75,6 +83,8 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
                 navigateToNextPoint();
             }
         });
+
+        mCurrentLocation = ARData.getCurrentLocation();
     }
 
     @Override
@@ -85,13 +95,29 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
     }
 
     @Override
+    public void onLocationChanged(Location location) {
+        // DO NOTHING
+//        if (mLocationFromImageTargets) {
+//            Log.d(getClass().getName(), "Ignore location from gps, using location from image targets");
+//            return;
+//        }
+//
+//        super.onLocationChanged(location);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_store_initial_location:
+//                if (!mFirstLocation) {
+//                    Toast.makeText(this, "No location avalaible yet", Toast.LENGTH_LONG).show();
+//                    return true;
+//                }
+
                 mInitialLocation = mCurrentLocation;
                 mLastPointLocation = mInitialLocation;
 
-                addPoint("Initial location", mInitialLocation);
+                addPoint("Initial location", mInitialLocation, START);
 
                 return true;
 
@@ -139,15 +165,19 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
 
         mLastPointLocation = location;
 
-        String title = destination ? "Destination" : "Checkpoint " + mPointLocations.size();
-        addPoint(title, location);
+        if (destination) {
+            addPoint("Destination", location, DESTINATION);
+        } else {
+            addPoint("Checkpoint " + mPointLocations.size(), location, CHECKPOINTS[mPointLocations.size() - 1]); // first is start
+        }
     }
 
-    private void addPoint(String name, Location location) {
+    private void addPoint(String name, Location location, String imageTarget) {
         Marker marker = createMarker(name, location);
 
         mPointLocations.add(location);
         mMarkers.add(marker);
+        mImageTargets.add(imageTarget);
         ARData.addMarkers(mMarkers);
     }
 
@@ -156,6 +186,8 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
 
         mCurrentNavigationPoint = -1;
         navigateToNextPoint();
+
+        mNavigationMode = true;
     }
 
     private void stopNavigation() {
@@ -163,6 +195,8 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
 
         ARData.clearMarkers();
         ARData.addMarkers(mMarkers);
+
+        mNavigationMode = false;
     }
 
     private void navigateToNextPoint() {
@@ -202,8 +236,9 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
             String id = (i < 10) ? "0" + i : Integer.toString(i);
             Location location = mPointLocations.get(i);
             Marker marker = mMarkers.get(i);
+            String imageTarget = mImageTargets.get(i);
 
-            strings.add(id + ";" + location.getLatitude() + ";" + location.getLongitude() + ";" + location.getAltitude() + ";" + marker.getName());
+            strings.add(id + ";" + location.getLatitude() + ";" + location.getLongitude() + ";" + location.getAltitude() + ";" + marker.getName() + ";" + imageTarget);
         }
 
         mSharedPreferences.edit().putStringSet("points", strings).apply();
@@ -216,6 +251,7 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
 
     private void restorePoints() {
         stopNavigation();
+        reset();
 
         List<String> strings = new ArrayList<String>(mSharedPreferences.getStringSet("points", new HashSet<String>()));
         Collections.sort(strings);
@@ -230,6 +266,7 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
 
             mPointLocations.add(location);
             mMarkers.add(createMarker(array[4], location));
+            mImageTargets.add(array[5]);
 
             Log.d(getClass().getName(), "Point : " + string);
         }
@@ -247,8 +284,48 @@ public class NavigationActivity extends AugmentedRealityActivity2 {
     private void reset() {
         mMarkers.clear();
         mPointLocations.clear();
+        mImageTargets.clear();
         mLastPointLocation = mInitialLocation;
 
         ARData.clearMarkers();
+    }
+
+    @Override
+    public synchronized void imageRecognized(String name, float distance) {
+        if (!mNavigationMode) {
+            return;
+        }
+
+        if (name.equals(mImageTargets.get(mCurrentNavigationPoint))) {
+            Location location = mPointLocations.get(mCurrentNavigationPoint);
+
+            distance = distance * (297 / 247f) / 1000f;
+
+            if (distance <= 1) {
+                mCurrentLocation = location;
+                ARData.setCurrentLocation(mCurrentLocation);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        navigateToNextPoint();
+                    }
+                });
+
+                Log.d(getClass().getName(), "POINT " + name + " REACHED VIA IMAGE RECOGNITION");
+            } else {
+                LatLng res = LatLngTool.travel(new LatLng(location.getLatitude(), location.getLongitude()), ARData.getAzimuth() - 180, (double) distance, LengthUnit.METER);
+                mCurrentLocation.setLatitude(res.getLatitude());
+                mCurrentLocation.setLongitude(res.getLongitude());
+                ARData.setCurrentLocation(mCurrentLocation);
+            }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mLogInfoView.updateLocation(mCurrentLocation);
+                }
+            });
+        }
     }
 }
